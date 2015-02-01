@@ -1,0 +1,60 @@
+package com.m.rabbit.constant;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.text.MessageFormat;
+
+import android.R.integer;
+
+import com.m.rabbit.bean.User;
+import com.m.rabbit.config.MyConfig;
+import com.m.rabbit.utils.MD5Utils;
+import com.m.rabbit.utils.PropertiesUtils;
+
+public class UrlFactory {
+	public static String platform;
+    public static String HTTP_HEAD;
+	static {
+		HTTP_HEAD = PropertiesUtils.getValueA(PropertiesUtils.PROPERTIES_COMMON_PATH, PropertiesUtils.SERVER_PATH).trim();
+        platform = AppConstants.getInstance().getmPlatform();
+    }
+	public static final String URL_RESET_PASSWORD = HTTP_HEAD+ "/mtvis/userMessage!doResetPassword.action?userName=%s";
+	public static final String URL_LOGIN = HTTP_HEAD+ "/login?loginName=%s&pwd=%s";
+	public static final String URL_REGIST = HTTP_HEAD+ "/regist?loginName=%s&type=1&pwd=%s&rePwd=%s";
+	
+	public static final String PROJECT_PATH = HTTP_HEAD+"/welcomePage?"+ "starProjectDictCode={0}&page={1}&pageSize={2}";
+	public static final String PROJECT_PATH_TEST = HTTP_HEAD+"/welcomePage?"+ "starProjectDictCode={0}";
+	public static final String URL_ATTENTION = HTTP_HEAD+ "/projectMember?partType=%s&pId=%s&meId=%s";
+	public static final String URL_CHECK_TEL_URL = HTTP_HEAD+ "/regist?loginName=%s&type=0";
+	public static final String URL_REQUEST_VERIFY_CODE = HTTP_HEAD+ "/sms?loginName=%s&type=0";
+	public static final String URL_CHECK_VERIFY_CODE = HTTP_HEAD+ "/sms?smsId=%s&type=1&captcha=%s&loginName=%s";
+	public static final String URL_USER_PROJECT = HTTP_HEAD+ "/userProject?meId=%s&type=%s&page=%s&pageSize=%s";
+	public static final String URL_PROJECT_DETAIL = HTTP_HEAD+ "/projectDetail?pId=%s&userId=%s";
+	public static final String URL_ADD_DELETE_FRIEND = HTTP_HEAD+ "/addFriend?fromUserId=%s&toUserId=%s&type=%s";
+	public static final String URL_GET_FRIENDS = HTTP_HEAD+ "/refreshFriend?fromUserId=%s";
+	public static final String URL_REQUEST_MESSAGE = HTTP_HEAD+ "/takeMessageLoop";
+	public static final String URL_ADD_FRIEND_CONFIRM = HTTP_HEAD+ "/addFriendConfirm?fromUserId=%s&toUserId=%s&status=%s";
+	public static final String URL_UPDATE_VERSION = HTTP_HEAD+ "/checkVesions?appType=%s&appCode=%s";
+	public static final String URL_UPLOAD = HTTP_HEAD+ "/fileUpload";
+	public static final String URL_SHOW_PROJECT = HTTP_HEAD+ "/showProject?page=%s&pageSize=%s&attention=%s&seqtype=%s";
+	public static final String ADD_PROJECT = HTTP_HEAD+ "/addProject?json=%s";
+	
+
+	public static String queryBanner(int platform){
+		return String.format(createUrl("/queryBanner?","type"),platform);
+	}
+
+	private static String createUrl(String head,String... fields){
+		StringBuilder sb = new StringBuilder();
+		sb.append(HTTP_HEAD);
+		sb.append(head);
+		for (int i = 0; i < fields.length; i++) {
+			if (i != 0 ) {
+				sb.append("&"); 
+			}
+			sb.append(fields[i]+"=%s");
+		}
+		return sb.toString();
+	}
+
+}
